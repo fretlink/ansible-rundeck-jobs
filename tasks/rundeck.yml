@@ -1,0 +1,47 @@
+- name: Create rundeck file list
+  find:
+    path: "{{ rundeck_jobs_path }}"
+    patterns: "*.yaml"
+  delegate_to: localhost
+  register: rundeck_jobs_files
+
+- name: Create rundeck jobs
+  uri:
+    url: "{{rundeck_api_url }}/{{rundeck_api_version}}/project/{{ rundeck_project }}/jobs/import"
+    method: POST
+    return_content: true
+    body_format: raw
+    body: fileformat=yaml&dupeOption=update&xmlBatch={{ lookup('file', item.path) | urlencode }}
+    headers:
+      Accept: application/json
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      X-Rundeck-Auth-Token: "{{ rundeck_api_token }}"
+  register: rundeck_create_jobs
+  with_items: "{{ rundeck_jobs_files.files}}"
+
+- name: Get all jobs
+  uri:
+    url: "{{rundeck_api_url }}/{{rundeck_api_version}}/project/{{ rundeck_project }}/jobs"
+    method: GET
+    headers:
+      Accept: application/json
+      X-Rundeck-Auth-Token: "{{ rundeck_api_token }}"
+  register: rundeck_existing_jobs
+  when: rundeck_remove_missing
+
+- name: "Prepare list of jobs to remove"
+  set_fact:
+    rundeck_created_ids: "{{ rundeck_create_jobs.results | map(attribute='json') | map('json_query','succeeded[*].id') | flatten | list }}"
+    rundeck_jobs_ids: "{{ rundeck_existing_jobs.json | map(attribute='id') | list }}"
+  when: rundeck_remove_missing
+
+- name: "Remove jobs not in the directory"
+  uri:
+    url: "{{rundeck_api_url }}/{{rundeck_api_version}}/job/{{ item }}"
+    method: DELETE
+    headers:
+      Accept: application/json
+      X-Rundeck-Auth-Token: "{{ rundeck_api_token }}"
+    status_code: [204]
+  with_items: "{{ rundeck_jobs_ids | difference(rundeck_created_ids) }}"
+  when: rundeck_remove_missing

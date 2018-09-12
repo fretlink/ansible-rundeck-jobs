@@ -1,0 +1,3 @@
+---
+rundeck_api_version: 26
+rundeck_remove_missing: true
