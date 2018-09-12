@@ -6,7 +6,7 @@ This role synchronize a directory containing yaml definition of jobs with a rund
 Requirements
 ------------
 
-None
+* `jmespath` python module
 
 Role Variables
 --------------
