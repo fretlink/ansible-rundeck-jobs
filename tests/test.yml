@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  roles:
+    - role: ansible-rundeck-jobs
+      rundeck_api_url: https://rundeck.example.org 
+      rundeck_project: Test
+      rundeck_api_token: token 
+      rundeck_jobs_path: tests/rundeck_files 
