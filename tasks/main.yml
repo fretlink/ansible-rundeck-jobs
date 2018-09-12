@@ -2,4 +2,4 @@
 - name: Include rundesk tasks
   include_tasks: rundeck.yml
   tags:
-    - rundeck
+    - rundeck-jobs
