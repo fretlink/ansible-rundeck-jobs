@@ -29,8 +29,12 @@ Example Playbook
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: servers
+      vars:
+        rundeck_api_url: rundeck.example.com
+        rundeck_project: test
+        rundeck_jobs_path: /tmp/rundeck-jobs
       roles:
-         - { role: rundeck-jobs, rundeck_api_url: rundeck.example.com, rundeck_project: test, rundeck_jobs_path: /tmp/rundeck-jobs }
+        - rundeck-jobs
 
 License
 -------
