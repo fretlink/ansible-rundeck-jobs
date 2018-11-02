@@ -21,7 +21,7 @@
 
 - name: Get all jobs
   uri:
-    url: "{{rundeck_api_url }}/{{rundeck_api_version}}/project/{{ rundeck_project }}/jobs"
+    url: "{{rundeck_api_url }}/{{rundeck_api_version}}/project/{{ rundeck_project }}/jobs?groupPathExact={{ rundeck_jobs_group | default('""') }}"
     method: GET
     headers:
       Accept: application/json

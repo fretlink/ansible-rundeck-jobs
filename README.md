@@ -17,6 +17,7 @@ Role Variables
 * `rundeck_api_token` the authentification token (mandatory).
 * `rundeck_api_version` api version supported by rundeck server. Default to 26.
 * `rundeck_remove_missing` Whether to delete jobs present in rundeck and not in file. Defaults to true.
+* `rundeck_jobs_group` the group of job to check for removal
 
 Dependencies
 ------------
