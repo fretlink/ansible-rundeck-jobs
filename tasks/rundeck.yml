@@ -21,11 +21,13 @@
 
 - name: Get all jobs
   uri:
-    url: "{{rundeck_api_url }}/{{rundeck_api_version}}/project/{{ rundeck_project }}/jobs?groupPathExact={{ rundeck_jobs_group | default('""') }}"
+    url: "{{rundeck_api_url }}/{{rundeck_api_version}}/project/{{ rundeck_project }}/jobs?groupPathExact={{ rundeck_jobs_group | default(rundeck_empty_group_path) }}"
     method: GET
     headers:
       Accept: application/json
       X-Rundeck-Auth-Token: "{{ rundeck_api_token }}"
+  vars:
+    rundeck_empty_group_path: '""'
   register: rundeck_existing_jobs
   when: rundeck_remove_missing
 
