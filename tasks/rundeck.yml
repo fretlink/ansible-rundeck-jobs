@@ -1,7 +1,7 @@
 - name: Create rundeck file list
   find:
     path: "{{ rundeck_jobs_path }}"
-    patterns: "*.yaml"
+    patterns: "*.yaml,*.yml"
   delegate_to: localhost
   register: rundeck_jobs_files
 
