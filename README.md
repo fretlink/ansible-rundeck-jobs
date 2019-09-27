@@ -19,6 +19,8 @@ Role Variables
 * `rundeck_remove_missing` Whether to delete jobs present in rundeck and not in file. Defaults to true.
 * `rundeck_jobs_group` the group of job to check for removal
 
+A [dhall](https://dhall-lang.org/) Type representing the roles' variables is available in the `./dhall/Config.dhall` file to help you configure your projects with some type checking.
+
 Dependencies
 ------------
 
