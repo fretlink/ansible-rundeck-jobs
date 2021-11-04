@@ -27,14 +27,17 @@
       Accept: application/json
       X-Rundeck-Auth-Token: "{{ rundeck_api_token }}"
   vars:
-    rundeck_empty_group_path: '""'
+    rundeck_empty_group_path: ''
   register: rundeck_existing_jobs
   when: rundeck_remove_missing
 
 - name: "Prepare list of jobs to remove"
   set_fact:
     rundeck_created_ids: "{{ rundeck_create_jobs.results | map(attribute='json') | map('json_query','succeeded[*].id') | flatten | list }}"
-    rundeck_jobs_ids: "{{ rundeck_existing_jobs.json | map(attribute='id') | list }}"
+    rundeck_jobs_ids: "{{ rundeck_existing_jobs_list | map(attribute='id') | list }}"
+  vars:
+    rundeck_existing_jobs_list_null: "{{ rundeck_existing_jobs.json | selectattr('group', 'none') | list }}"
+    rundeck_existing_jobs_list: "{{ rundeck_jobs_group | default(false) | ternary(rundeck_existing_jobs.json, rundeck_existing_jobs_list_null) }}"
   when: rundeck_remove_missing
 
 - name: "Remove jobs not in the directory"
