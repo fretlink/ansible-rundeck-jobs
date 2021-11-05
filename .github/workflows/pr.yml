@@ -7,8 +7,11 @@ on:
     branches:
       - master
 jobs:
+  prepare:
+    run
   tests:
     runs-on: ubuntu-latest
+    uses: actions/checkout@v2
     services:
       rundeck:
         image: rundeck/rundeck:3.4.3
@@ -23,13 +26,18 @@ jobs:
           --health-cmd="wget -t 1 -q -O /dev/null http://localhost:4440"
           --health-timeout 5s
           --health-retries 15
+          --entrypoint 
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          clean: false
+          path: "${{ github.repository }}"
       - run: |
-          apt update && apt install -y python3-pip wait-for-it
-          pip3 install -r requirements.txt
-          pip3 install -r tests/requirements.txt
-      - run: http localhost:4440/api/26/projects name=test X-Rundeck-Auth-Token:testtoken Accept:application/json
+          cat /home/runner/work/ansible-rundeck-jobs/ansible-rundeck-jobs/test/tokens.properties
+          sudo apt update && sudo apt install -y python3-pip
+          pip3 install -r ${{ github.repository }}/requirements.txt
+          pip3 install -r ${{ github.repository }}/tests/requirements.txt
+      - run: http --ignore-stdin localhost:4440/api/26/projects name=test X-Rundeck-Auth-Token:testtoken Accept:application/json
       - run: |
-          cd tests && ansible-playbook -i inventory test.yml
+          cd ${{ github.repository }}/tests && ansible-playbook -i inventory test.yml
