@@ -1,0 +1,13 @@
+- defaultTab: summary
+  description: Test job 
+  executionEnabled: true
+  loglevel: INFO
+  name: Test job 2
+  nodeFilterEditable: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - exec: "false" 
+    keepgoing: false
+    strategy: node-first
+

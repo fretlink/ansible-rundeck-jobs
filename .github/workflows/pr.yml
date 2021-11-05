@@ -1,0 +1,35 @@
+name: Test PR
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      rundeck:
+        image: rundeck/rundeck:3.4.3
+        ports:
+          - 4440:4440
+        env:
+          RUNDECK_TOKENS_FILE: /tokens.properties
+        volumes:
+          - ${{ github.workspace }}/test/tokens.properties:/tokens.properties
+        options: >-
+          --health-interval=10s
+          --health-cmd="wget -t 1 -q -O /dev/null http://localhost:4440"
+          --health-timeout 5s
+          --health-retries 15
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          apt update && apt install -y python3-pip wait-for-it
+          pip3 install -r requirements.txt
+          pip3 install -r tests/requirements.txt
+      - run: http localhost:4440/api/26/projects name=test X-Rundeck-Auth-Token:testtoken Accept:application/json
+      - run: |
+          cd tests && ansible-playbook -i inventory test.yml
