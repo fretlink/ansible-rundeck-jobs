@@ -19,6 +19,18 @@
   register: rundeck_create_jobs
   with_items: "{{ rundeck_jobs_files.files}}"
 
+- name: Check if a job failed
+  fail:
+    msg: "Job defined in {{ file }} has failed with message: {{ message }}"
+  with_items: "{{ rundeck_create_jobs.results }}"
+  loop_control:
+    label: "{{ item.item.path }}"
+  vars:
+    file: "{{ item.item.path }}"
+    message: "{{ item.json.failed }}"
+  when: item.json.failed|length > 0
+  ignore_errors: "{{ rundeck_ignore_creation_error }}"
+
 - name: Get all jobs
   uri:
     url: "{{rundeck_api_url }}/{{rundeck_api_version}}/project/{{ rundeck_project }}/jobs?groupPathExact={{ rundeck_jobs_group | default(rundeck_empty_group_path) }}"
