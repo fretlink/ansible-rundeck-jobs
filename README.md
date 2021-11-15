@@ -18,6 +18,7 @@ Role Variables
 * `rundeck_api_version` api version supported by rundeck server. Default to 26.
 * `rundeck_remove_missing` Whether to delete jobs present in rundeck and not in file. Defaults to true.
 * `rundeck_jobs_group` the group of job to check for removal
+* `rundeck_ignore_creation_errors` whether to ignore job creation error. Default to true to follow the 200 statu given by rundeck API
 
 A [dhall](https://dhall-lang.org/) Type representing the roles' variables is available in the `./dhall/Config.dhall` file to help you configure your projects with some type checking.
 
@@ -42,7 +43,7 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-TBD
+BSD
 
 Author Information
 ------------------
