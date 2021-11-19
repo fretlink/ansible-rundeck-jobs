@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - master
+  release:
+    types: [created, edited, published]
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -33,3 +35,14 @@ jobs:
       - run: http --ignore-stdin localhost:4440/api/26/projects name=test X-Rundeck-Auth-Token:testtoken Accept:application/json
       - run: |
           cd ${{ github.repository }}/tests && ansible-playbook -i inventory test.yml
+  publish:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: ${{ github.event_name == 'release' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Upload to ansible-galaxy
+        uses: artis3n/ansible_galaxy_collection@v2
+        with:
+          api_key: '${{ secrets.GALAXY_API_KEY }}'
+          galaxy_version: '${{ github.event.release.tag_name }}'
