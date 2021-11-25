@@ -4,5 +4,5 @@
     - role: ../../ansible-rundeck-jobs
       rundeck_api_url: http://localhost:4440/api
       rundeck_project: test
-      rundeck_api_token: testtoken 
-      rundeck_jobs_path: rundeck_files 
+      rundeck_api_token: testtoken
+      rundeck_jobs_path: rundeck_files

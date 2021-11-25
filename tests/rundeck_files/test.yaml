@@ -1,5 +1,5 @@
 - defaultTab: summary
-  description: Test job 
+  description: Test job
   executionEnabled: true
   loglevel: INFO
   name: Test job 2
@@ -7,7 +7,6 @@
   scheduleEnabled: true
   sequence:
     commands:
-    - exec: "false" 
+      - exec: "false"
     keepgoing: false
     strategy: node-first
-
