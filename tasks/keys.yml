@@ -1,0 +1,33 @@
+---
+- name: Build scoped path
+  set_fact:
+    rundeck_key_full_path: "{{ rundeck_keys_scoped_by_project | default(true) | ternary('project/' + rundeck_project + '/' + key_group_path, key_group_path) }}"
+  vars:
+    group_name: "{{ rundeck_jobs_group | default('') }}"
+    key_group_path: "{{ rundeck_keys_scoped_by_group | default((group_name|length) > 0) | ternary(group_name + '/' + item.path, item.path) }}"
+
+- name: Check key existence
+  uri:
+    url: "{{ rundeck_api_url }}/{{ rundeck_api_version }}/storage/keys/{{ rundeck_key_full_path }}"
+    method: GET
+    headers:
+      Accept: application/json
+      X-Rundeck-Auth-Token: "{{ rundeck_api_token }}"
+    status_code: [200, 404]
+  register: rundeck_existing_key
+
+- name: Set method
+  set_fact:
+    rundeck_key_uri_method: "{{ (rundeck_existing_key.status == 404) | ternary('POST', 'PUT') }}"
+
+- name: Import key
+  uri:
+    url: "{{ rundeck_api_url }}/{{ rundeck_api_version }}/storage/keys/{{ rundeck_key_full_path }}"
+    method: "{{ rundeck_key_uri_method }}"
+    headers:
+      Accept: application/json
+      Content-Type: "{{ item.type }}"
+      X-Rundeck-Auth-Token: "{{ rundeck_api_token }}"
+    status_code: [200, 201]
+    body: "{{ item.value }}"
+    body_format: raw
