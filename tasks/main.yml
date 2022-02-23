@@ -3,3 +3,8 @@
   include_tasks: rundeck.yml
   tags:
     - rundeck-jobs
+- name: Include rundeck keys
+  include_tasks: keys.yml
+  tags:
+    - rundeck-keys
+  with_items: "{{ rundeck_jobs_keys }}"

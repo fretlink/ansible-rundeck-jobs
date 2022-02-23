@@ -2,3 +2,5 @@
 rundeck_api_version: 26
 rundeck_remove_missing: true
 rundeck_ignore_creation_error: true
+rundeck_keys_scoped_by_project: true
+rundeck_jobs_keys: []
