@@ -1,6 +1,6 @@
 let Key = { path : Text, value : Text, type : Text }
 
-let Vault = { apiToken : Text }
+let Vault = λ(a : Type) → { apiToken : Text, keys : a }
 
 let Config =
       { Type =
