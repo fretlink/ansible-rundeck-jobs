@@ -23,6 +23,7 @@ Role Variables
 * `rundeck_keys_scoped_by_project` scope each key by project (In a project/ProjectName subdirectory)
 * `rundeck_keys_scoped_by_group` scope each key by group. Defaults to true if the group is defined, false otherwise
 * `rundeck_remove_missing_keys` remove keys that are not declared in ansible (possibly restrained to the scope defined above)
+* `rundeck_jobs` a list of jobs defined inline (similarly to the contents in files at `rundeck_jobs_path`)
 
 A [dhall](https://dhall-lang.org/) Type representing the roles' variables is available in the `./dhall/Config.dhall` file to help you configure your projects with some type checking.
 
