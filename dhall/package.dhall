@@ -10,6 +10,7 @@ let Config =
           , rundeck_api_token : Text
           , rundeck_api_version : Optional Natural
           , rundeck_remove_missing : Optional Bool
+          , rundeck_remove_missing_keys : Optional Bool
           , rundeck_ignore_creation_error : Optional Bool
           , rundeck_jobs_group : Optional Text
           , rundeck_jobs_keys : List Key
@@ -19,6 +20,7 @@ let Config =
       , default =
         { rundeck_api_version = Some 26
         , rundeck_remove_missing = Some True
+        , rundeck_remove_missing_keys = Some False
         , rundeck_ignore_creation_error = Some True
         , rundeck_jobs_group = None Text
         , rundeck_jobs_keys = [] : List Key

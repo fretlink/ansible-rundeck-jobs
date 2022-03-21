@@ -19,6 +19,10 @@ Role Variables
 * `rundeck_remove_missing` Whether to delete jobs present in rundeck and not in file. Defaults to true.
 * `rundeck_jobs_group` the group of job to check for removal
 * `rundeck_ignore_creation_errors` whether to ignore job creation error. Default to true to follow the 200 status given by rundeck API
+* `rundeck_jobs_keys` a list of keys to import in rundeck. Each key is a dict with a `path`, a `value` and a `type` as declared in [https://docs.rundeck.com/3.0.x/api/index.html#upload-keys]().
+* `rundeck_keys_scoped_by_project` scope each key by project (In a project/ProjectName subdirectory)
+* `rundeck_keys_scoped_by_group` scope each key by group. Defaults to true if the group is defined, false otherwise
+* `rundeck_remove_missing_keys` remove keys that are not declared in ansible (possibly restrained to the scope defined above)
 
 A [dhall](https://dhall-lang.org/) Type representing the roles' variables is available in the `./dhall/Config.dhall` file to help you configure your projects with some type checking.
 
