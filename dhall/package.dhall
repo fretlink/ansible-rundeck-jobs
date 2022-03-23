@@ -2,6 +2,10 @@ let Key = { path : Text, value : Text, type : Text }
 
 let Vault = λ(a : Type) → { apiToken : Text, keys : a }
 
+let Jobs = ./jobs/type.dhall
+
+let JSON = (./jobs/commons.dhall).JSON
+
 let Config =
       { Type =
           { rundeck_jobs_path : Text
@@ -16,6 +20,7 @@ let Config =
           , rundeck_jobs_keys : List Key
           , rundeck_keys_scoped_by_project : Optional Bool
           , rundeck_keys_scoped_by_group : Optional Bool
+          , rundeck_jobs : List JSON.Type
           }
       , default =
         { rundeck_api_version = Some 26
@@ -26,7 +31,8 @@ let Config =
         , rundeck_jobs_keys = [] : List Key
         , rundeck_keys_scoped_by_project = Some True
         , rundeck_keys_scoped_by_group = None Bool
+        , rundeck_jobs = [] : List JSON.Type
         }
       }
 
-in  { Vault, Config, Key }
+in  { Vault, Config, Key, Jobs }
